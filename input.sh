@@ -1,3 +1,4 @@
+#!/bin/bash
 function prompt_confirm() {
   while true; do
     read -r -n 1 -p "${1:-Continue?} [y/n]: " REPLY

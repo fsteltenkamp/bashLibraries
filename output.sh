@@ -1,3 +1,4 @@
+#!/bin/bash
 function coloredEcho(){
     local exp=$1;
     local color=$2;
