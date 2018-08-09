@@ -13,3 +13,13 @@ function fileExists() {
         return 1
     fi
 }
+
+function checkCreateDir() {
+    local dir=$1;
+    if [ ! -d $dir ]; then
+        mkdir $dir;
+        return 1
+    else
+        return 1
+    fi
+}
