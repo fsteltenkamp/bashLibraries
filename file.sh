@@ -17,7 +17,7 @@ function fileExists() {
 function checkCreateDir() {
     local dir=$1;
     if [ ! -d $dir ]; then
-        mkdir $dir;
+        mkdir -p $dir;
         return 1
     else
         return 1
