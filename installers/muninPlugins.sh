@@ -1,5 +1,5 @@
 #!/bin/bash
-muninPlugins=array()
+muninPlugins=()
 #template
 #muninPlugins[]["name"]=""
 #muninPlugins[]["file"]=""
