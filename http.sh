@@ -2,5 +2,9 @@
 function downloadFile() {
     local fileSrc=$1;
     local fileName=$2;
-    wget -qO $fileName $fileSrc
+    if [ -z $fileName ]; then
+        wget -q $fileSrc;
+    else
+        wget -qO $fileName $fileSrc
+    fi
 }
