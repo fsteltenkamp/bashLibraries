@@ -1,15 +1,17 @@
 #!/bin/bash
 function dockerInstall() {
     if checkInstalled "docker"; then
+        coloredEcho "Docker is already installed" orange
         return 0
     else
         #install dependencies
-        packageInstall apt-transport-https ca-certificates curl gnupg2 software-properties-common
+        packageInstall "apt-transport-https ca-certificates curl gnupg2 software-properties-common"
         #install key
-        downloadFile https://download.docker.com/linux/debian/gpg - | apt-key add -
+        installAptKey "https://download.docker.com/linux/debian/gpg"
         #insert source into own list
-        echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee -a /etc/apt/sources.list.d/docker.list
+        addAptSource "[arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" "docker"
+        #update and install docker ce
         packageUpdate
-        packageInstall docker-ce
+        packageInstall "docker-ce"
     fi
 }

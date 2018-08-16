@@ -1,11 +1,9 @@
 #!/bin/bash
 function installFilebeat() {
-    coloredEcho "Installing PGP Key..." yellow
-    downloadFile "https://artifacts.elastic.co/GPG-KEY-elasticsearch" "-" | apt-key add -
+    installAptKey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     coloredEcho "Installing Requirements..." yellow
-    packageInstall apt-transport-https
-    coloredEcho "Installing Repository..." yellow
-    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-6.x.list
+    packageInstall "apt-transport-https"
+    addAptSource "deb https://artifacts.elastic.co/packages/6.x/apt stable main"
     coloredEcho "Refreshing Lists..." yellow
     packageUpdate
     coloredEcho "Installing Filebeat..."
@@ -17,12 +15,10 @@ function installFilebeat() {
 }
 
 function installPacketbeat() {
-    coloredEcho "Installing PGP Key..." yellow
-    downloadFile "https://artifacts.elastic.co/GPG-KEY-elasticsearch" "-" | apt-key add -
+    installAptKey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     coloredEcho "Installing Requirements..." yellow
-    packageInstall apt-transport-https
-    coloredEcho "Installing Repository..." yellow
-    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-6.x.list
+    packageInstall "apt-transport-https"
+    addAptSource "deb https://artifacts.elastic.co/packages/6.x/apt stable main"
     coloredEcho "Refreshing Lists..." yellow
     packageUpdate
     coloredEcho "Installing PacketBeat..."
@@ -34,12 +30,10 @@ function installPacketbeat() {
 }
 
 function installMetricbeat() {
-    coloredEcho "Installing PGP Key..." yellow
-    downloadFile "https://artifacts.elastic.co/GPG-KEY-elasticsearch" "-" | apt-key add -
+    installAptKey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     coloredEcho "Installing Requirements..." yellow
-    packageInstall apt-transport-https
-    coloredEcho "Installing Repository..." yellow
-    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-6.x.list
+    packageInstall "apt-transport-https"
+    addAptSource "deb https://artifacts.elastic.co/packages/6.x/apt stable main"
     coloredEcho "Refreshing Lists..." yellow
     packageUpdate
     coloredEcho "Installing MetricBeat..."
@@ -51,12 +45,10 @@ function installMetricbeat() {
 }
 
 function installHeartbeat() {
-    coloredEcho "Installing PGP Key..." yellow
-    downloadFile "https://artifacts.elastic.co/GPG-KEY-elasticsearch" "-" | apt-key add -
+    installAptKey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     coloredEcho "Installing Requirements..." yellow
-    packageInstall apt-transport-https
-    coloredEcho "Installing Repository..." yellow
-    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-6.x.list
+    packageInstall "apt-transport-https"
+    addAptSource "deb https://artifacts.elastic.co/packages/6.x/apt stable main"
     coloredEcho "Refreshing Lists..." yellow
     packageUpdate
     coloredEcho "Installing Heartbeat..."
@@ -68,12 +60,10 @@ function installHeartbeat() {
 }
 
 function installAudirbeat() {
-    coloredEcho "Installing PGP Key..." yellow
-    downloadFile "https://artifacts.elastic.co/GPG-KEY-elasticsearch" "-" | apt-key add -
+    installAptKey "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
     coloredEcho "Installing Requirements..." yellow
-    packageInstall apt-transport-https
-    coloredEcho "Installing Repository..." yellow
-    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee -a /etc/apt/sources.list.d/elastic-6.x.list
+    packageInstall "apt-transport-https"
+    addAptSource "deb https://artifacts.elastic.co/packages/6.x/apt stable main"
     coloredEcho "Refreshing Lists..." yellow
     packageUpdate
     coloredEcho "Installing Auditbeat..."
