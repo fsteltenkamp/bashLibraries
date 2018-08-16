@@ -23,11 +23,21 @@ function javaInstallMan() {
 }
 
 function javaInstallOpenJDK8() {
-    coloredEcho "Installing OpenJDK 8"
-    packageInstall openjdk-8-jre
+    if checkInstalled "java"; then
+        coloredEcho "Java is already installed" orange
+        return 0
+    else
+        coloredEcho "Installing OpenJDK 8"
+        packageInstall openjdk-8-jre
+    fi
 }
 
 function javaInstallOpenJDK7() {
-    coloredEcho "Installing OpenJDK 7"
-    packageInstall openjdk-7-jre
+    if checkInstalled "java"; then
+        coloredEcho "Java is already installed" orange
+        return 0
+    else
+        coloredEcho "Installing OpenJDK 7"
+        packageInstall openjdk-7-jre
+    fi
 }
