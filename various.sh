@@ -8,6 +8,19 @@ function checkInstalled() {
     fi
 }
 
+function installAptKey() {
+    keyUrl=$1
+    #check if key is already installed here
+    downloadFile $1 - | apt-key add -
+}
+
+function addAptSource() {
+    source=$1
+    list=$2
+    #check if source exists here
+    echo $1 | tee -a "/etc/apt/sources.list.d/$2.list"
+}
+
 function installer() {
     package=$1
     case "$package" in
