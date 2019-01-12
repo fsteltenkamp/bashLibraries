@@ -12,7 +12,7 @@ function javaInstallMan() {
     coloredEcho "Updating..."
     update-alternatives --install /usr/bin/java java /usr/lib/jvm/jvm1.8.0/jre/bin/java 3
     coloredEcho "Installing Java Certificates..."
-    apt-get install -y ca-certificates-java
+    packageInstall ca-certificates-java
     update-ca-certificates -f
     coloredEcho "Cleaning up..." cyan
     coloredEcho "Removing unpacked Java" cyan
