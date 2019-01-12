@@ -1,5 +1,5 @@
 #!/bin/bash
 function mysqlInstall() {
-    coloredEcho "Installing MySQL Server" cyan
+    coloredEcho "Installing MySQL Server & Client" cyan
     packageInstall mysql-server mysql-client
 }
