@@ -1,6 +1,6 @@
 #!/bin/bash
 function packageUpdate() {
-    apt update && apt upgrade
+    apt update -y && apt upgrade -y
 }
 
 function packageInstall() {
