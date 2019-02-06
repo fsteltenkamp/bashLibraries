@@ -2,26 +2,24 @@
 declare -A sysinfo
 
 function sysinfo_general_sysinfo() {
-    declare -A gensysinfo
-    gensysinfo[provider]="$0"
-    gensysinfo[time]=$(date)
-    gensysinfo[week]=$(date + "%V")
-    sysinfo[gensysinfo]=$gensysinfo
-    echo $gensysinfo
+    declare -g SYSINFO_GEN_SY_PROVIDER="$0"
+    declare -g SYSINFO_GEN_SY_TIME=$(date)
+    declare -g SYSINFO_GEN_SY_WEEK=$(date + "%V")
 }
 
 function sysinfo_general() {
-    ARCH=$(uname -m)
-    KERN=$(uname -r)
-    DISTRO=$(head -n1 /etc/issue)
-    CODENAME=$(lsb_release -cs)
-    HOSTNAME=$(hostname)
-    CURUSER=$(whoami)
-    USERCOUNT=$(users | wc -w)
-    LOGGEDINUSERS=$(w | cut -d " " -f 1 - | grep -v USER | sort -u)
-    UPTIME=$(uptime | awk '{ gsub(/,/, ""); print $3 }')
-    RUNLEVEL=$(runlevel)
-    PROCCOUNT=$(ps ax | wc -l)
+    declare -g SYSINFO_GEN_ARCH=$(uname -m)
+    declare -g SYSINFO_GEN_KERN=$(uname -r)
+    declare -g SYSINFO_GEN_DISTRO=$(head -n1 /etc/issue)
+    declare -g SYSINFO_GEN_DISTRO_VERSION=$(head -n1 /etc/issue | awk '{ gsub(/,/, ""); print $3}')
+    declare -g SYSINFO_GEN_CODENAME=$(lsb_release -cs)
+    declare -g SYSINFO_GEN_HOSTNAME=$(hostname)
+    declare -g SYSINFO_GEN_CURUSER=$(whoami)
+    declare -g SYSINFO_GEN_USERCOUNT=$(users | wc -w)
+    declare -g SYSINFO_GEN_LOGGEDINUSERS=$(w | cut -d " " -f 1 - | grep -v USER | sort -u)
+    declare -g SYSINFO_GEN_UPTIME=$(uptime | awk '{ gsub(/,/, ""); print $3 }')
+    declare -g SYSINFO_GEN_RUNLEVEL=$(runlevel)
+    declare -g SYSINFO_GEN_PROCCOUNT=$(ps ax | wc -l)
 }
 
 function sysinfo_memory() {
