@@ -12,6 +12,6 @@ function dockerInstall() {
         addAptSource "[arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" "docker"
         #update and install docker ce
         packageUpdate
-        packageInstall "docker-ce"
+        packageInstall "docker-ce docker-ce-cli containerd.io"
     fi
 }
