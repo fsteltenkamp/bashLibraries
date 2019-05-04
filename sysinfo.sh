@@ -1,4 +1,5 @@
 #!/bin/bash
+#TODO: Export instead of declare -g ??
 declare -A sysinfo
 
 function sysinfo_general_sysinfo() {
