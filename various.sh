@@ -51,3 +51,13 @@ function checkDockerContainer() {
         return 1
     fi
 }
+
+function replace() {
+    toreplace=$1
+    replacewith=$2
+    replacein=$3
+    #log
+    log "info" "Replacing $toreplace with $replacewith in $replacein"
+    #test this:
+    sed -i "s#$toreplace#$replacewith#g" $replacein
+}
