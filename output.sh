@@ -3,8 +3,8 @@
 function coloredEcho(){
     local exp=$1;
     local color=$2;
-    if ! [[ $color =~ '^[0-9]$' ]] ; then
-       case $(echo $color | tr '[:upper:]' '[:lower:]') in
+    if ! [[ $color =~ ^[0-9]$ ]] ; then
+       case $(echo "$color" | tr '[:upper:]' '[:lower:]') in
         black) color=0 ;;
         red) color=1 ;;
         green) color=2 ;;
@@ -16,7 +16,7 @@ function coloredEcho(){
        esac
     fi
     tput setaf $color;
-    echo $exp;
+    echo "$exp";
     tput sgr0;
 }
 
@@ -25,7 +25,7 @@ function log() {
     MSG=$2
     LOGFILENAME=$3
 
-    if [ -z $LOGFILENAME ]; then
+    if [ -z "$LOGFILENAME" ]; then
         LOGFILENAME="out.log"
     fi
 
@@ -33,15 +33,17 @@ function log() {
     RED="\033[1;31m"
     GREEN="\033[1;32m"
     YELLOW="\033[1;33m"
+    # shellcheck disable=SC2034
     BLUE="\033[0;34m"
-    MANGENTA="\033[0;35m"
+    MAGENTA="\033[0;35m"
     CYAN="\033[1;36m"
     GREY="\033[0;37m"
+    # shellcheck disable=SC2034
     WHITE="\033[1;39m"
     NOCOL="\033[00m"
 
 
-    TS=$(date "+$Y-$m-$d $T")
+    TS=$(date "+%Y-%m-%d %T")
 
     case $TYPE in
         success)

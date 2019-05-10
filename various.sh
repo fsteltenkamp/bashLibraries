@@ -1,7 +1,7 @@
 #!/bin/bash
 function checkInstalled() {
     program=$1
-    if type $program >/dev/null 2>&1; then
+    if type "$program" >/dev/null 2>&1; then
         return 0
     else
         return 1
@@ -11,14 +11,14 @@ function checkInstalled() {
 function installAptKey() {
     keyUrl=$1
     #check if key is already installed here
-    downloadFile $1 - | apt-key add -
+    downloadFile "$keyUrl" - | apt-key add -
 }
 
 function addAptSource() {
     source=$1
     list=$2
     #check if source exists here
-    echo $1 | tee -a "/etc/apt/sources.list.d/$2.list"
+    echo "$source" | tee -a "/etc/apt/sources.list.d/$list.list"
 }
 
 function installer() {
@@ -45,7 +45,7 @@ function checkDockerContainer() {
         return 1
     fi
     container=$1
-    if docker image ls | grep -q $container 2>/dev/null; then
+    if docker image ls | grep -q "$container" 2>/dev/null; then
         return 0
     else
         return 1
@@ -59,5 +59,5 @@ function replace() {
     #log
     log "info" "Replacing $toreplace with $replacewith in $replacein"
     #test this:
-    sed -i "s#$toreplace#$replacewith#g" $replacein
+    sed -i "s#$toreplace#$replacewith#g" "$replacein"
 }

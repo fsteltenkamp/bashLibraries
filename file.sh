@@ -2,12 +2,12 @@
 function moveFile() {
     local fileSrc=$1;
     local fileTar=$2;
-    mv $fileSrc $fileTar
+    mv "$fileSrc" "$fileTar"
 }
 
 function fileExists() {
     local file=$1;
-    if [ ! -f $file ]; then
+    if [ ! -f "$file" ]; then
         return 0
     else
         return 1
@@ -16,8 +16,8 @@ function fileExists() {
 
 function checkCreateDir() {
     local dir=$1;
-    if [ ! -d $dir ]; then
-        mkdir -p $dir;
+    if [ ! -d "$dir" ]; then
+        mkdir -p "$dir";
         return 1
     else
         return 1

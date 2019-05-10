@@ -1,80 +1,92 @@
 #!/bin/bash
-#TODO: Export instead of declare -g ??
-declare -A sysinfo
 
 function sysinfo_general_sysinfo() {
-    declare -g SYSINFO_GEN_SY_PROVIDER="$0"
-    declare -g SYSINFO_GEN_SY_TIME=$(date)
-    declare -g SYSINFO_GEN_SY_WEEK=$(date + "%V")
+    export SYSINFO_GEN_SY_PROVIDER SYSINFO_GEN_SY_TIME SYSINFO_GEN_SY_WEEK
+    SYSINFO_GEN_SY_PROVIDER="$0"
+    SYSINFO_GEN_SY_TIME=$(date)
+    SYSINFO_GEN_SY_WEEK=$(date + "%V")
 }
 
 function sysinfo_general() {
-    declare -g SYSINFO_GEN_ARCH=$(uname -m)
-    declare -g SYSINFO_GEN_KERN=$(uname -r)
-    declare -g SYSINFO_GEN_DISTRO=$(head -n1 /etc/issue)
-    declare -g SYSINFO_GEN_DISTRO_VERSION=$(head -n1 /etc/issue | awk '{ gsub(/,/, ""); print $3}')
-    declare -g SYSINFO_GEN_CODENAME=$(lsb_release -cs)
-    declare -g SYSINFO_GEN_HOSTNAME=$(hostname)
-    declare -g SYSINFO_GEN_CURUSER=$(whoami)
-    declare -g SYSINFO_GEN_USERCOUNT=$(users | wc -w)
-    declare -g SYSINFO_GEN_LOGGEDINUSERS=$(w | cut -d " " -f 1 - | grep -v USER | sort -u)
-    declare -g SYSINFO_GEN_UPTIME=$(uptime | awk '{ gsub(/,/, ""); print $3 }')
-    declare -g SYSINFO_GEN_RUNLEVEL=$(runlevel)
-    declare -g SYSINFO_GEN_PROCCOUNT=$(ps ax | wc -l)
+    export SYSINFO_GEN_ARCH SYSINFO_GEN_KERN SYSINFO_GEN_DISTRO SYSINFO_GEN_DISTRO_VERSION SYSINFO_GEN_CODENAME SYSINFO_GEN_HOSTNAME
+    export SYSINFO_GEN_CURUSER SYSINFO_GEN_USERCOUNT SYSINFO_GEN_LOGGEDINUSERS SYSINFO_GEN_UPTIME SYSINFO_GEN_RUNLEVEL SYSINFO_GEN_PROCCOUNT
+    SYSINFO_GEN_ARCH=$(uname -m) 
+    SYSINFO_GEN_KERN=$(uname -r)
+    SYSINFO_GEN_DISTRO=$(head -n1 /etc/issue)
+    SYSINFO_GEN_DISTRO_VERSION=$(head -n1 /etc/issue | awk '{ gsub(/,/, ""); print $3}')
+    SYSINFO_GEN_CODENAME=$(lsb_release -cs)
+    SYSINFO_GEN_HOSTNAME=$(hostname)
+    SYSINFO_GEN_CURUSER=$(whoami)
+    SYSINFO_GEN_USERCOUNT=$(users | wc -w)
+    SYSINFO_GEN_LOGGEDINUSERS=$(w | cut -d " " -f 1 - | grep -v USER | sort -u)
+    SYSINFO_GEN_UPTIME=$(uptime | awk '{ gsub(/,/, ""); print $3 }')
+    SYSINFO_GEN_RUNLEVEL=$(runlevel)
+    SYSINFO_GEN_PROCCOUNT=$(ps ax | wc -l)
 }
 
 function sysinfo_memory() {
-    local mem=$(cat /proc/meminfo)
-    local free=$(free -m)
+    export SYSINFO_MEM_MEM SYSINFO_MEM_FREE
+    SYSINFO_MEM_MEM=$(cat /proc/meminfo)
+    SYSINFO_MEM_FREE=$(free -m)
 }
 
 function sysinfo_filesysteminfo() {
-    local fs=$(df -h)
+    export SYSINFO_FSI_FS
+    SYSINFO_FSI_FS=$(df -h)
 }
 
 function sysinfo_net() {
-    IFINFO=$(ifconfig)
+    export SYSINFO_NET_IFINFO
+    SYSINFO_NET_IFINFO=$(ifconfig)
 }
 
 function sysinfo_pci() {
-    PCIINFO=$(lspci -tv)
+    export SYSINFO_PCI_PCIINFO
+    SYSINFO_PCI_PCIINFO=$(lspci -tv)
 }
 
 function sysinfo_ramusage() {
-    local total=$(free | awk '/^Mem:/ {print $2}')
-    local used=$(free | awk '/^Mem:/ {print $3}')
-    local free=$(free | awk '/^Mem:/ {print $4}')
-    local shared=$(free | awk '/^Mem:/ {print $5}')
-    local buffers=$(free | awk '/^Mem:/ {print $6}')
-    local cached=$(free | awk '/^Mem:/ {print $7}')
+    export SYSINFO_RAM_TOTAL SYSINFO_RAM_USED SYSINFO_RAM_FREE SYSINFO_RAM_SHARED SYSINFO_RAM_BUFFERS SYSINFO_RAM_CACHED
+    SYSINFO_RAM_TOTAL=$(free | awk '/^Mem:/ {print $2}')
+    SYSINFO_RAM_USED=$(free | awk '/^Mem:/ {print $3}')
+    SYSINFO_RAM_FREE=$(free | awk '/^Mem:/ {print $4}')
+    SYSINFO_RAM_SHARED=$(free | awk '/^Mem:/ {print $5}')
+    SYSINFO_RAM_BUFFERS=$(free | awk '/^Mem:/ {print $6}')
+    SYSINFO_RAM_CACHED=$(free | awk '/^Mem:/ {print $7}')
 }
 
 function sysinfo_swapusage() {
-    local total=$(free | awk '/^Swap:/ {print $2}')
-    local used=$(free | awk '/^Swap:/ {print $3}')
-    local free=$(free | awk '/^Swap:/ {print $4}')
+    export SYSINFO_SWAP_TOTAL SYSINFO_SWAP_USED SYSINFO_SWAP_FREE
+    SYSINFO_SWAP_TOTAL=$(free | awk '/^Swap:/ {print $2}')
+    SYSINFO_SWAP_USED=$(free | awk '/^Swap:/ {print $3}')
+    SYSINFO_SWAP_FREE=$(free | awk '/^Swap:/ {print $4}')
 }
 
 function sysinfo_cpuusage() {
-    local processusage=$(ps axch -o cmd:15,%cpu --sort=-%cpu)
+    export SYSINFO_CPU_PROCESSUSAGE
+    SYSINFO_CPU_PROCESSUSAGE=$(ps axch -o cmd:15,%cpu --sort=-%cpu)
 }
 
-function sysinfo_memusage() {
-    local memusage=$(ps axch -o cmd:15,%mem --sort=-%mem)
-}
+#function sysinfo_memusage() {
+    #useful? have memory already
+    #memusage=$(ps axch -o cmd:15,%mem --sort=-%mem)
+#}
 
 function sysinfo_cpuhogs() {
-    local toptenhogs=$(sysinfo_cpuusage raw | head)
+    export SYSINFO_CPUHOGS_TOPTEN
+    SYSINFO_CPUHOGS_TOPTEN=$(sysinfo_cpuusage raw | head)
 }
 
 function sysinfo_memhogs() {
-    local toptenhogs=$(sysinfo_memusage raw | head)
+    export SYSINFO_MEMHOGS_TOPTEN
+    SYSINFO_MEMHOGS_TOPTEN=$(sysinfo_memusage raw | head)
 }
 
 function sysinfo_cpuinfo() {
-    local cpu=$(grep -c 'processor' /proc/cpuinfo)
-    local model=$(awk -F':' '/^model name/ { print $2 }' /proc/cpuinfo)
-    local vendor=$(awk -F':' '/^vendor_id/ { print $2 }' /proc/cpuinfo)
-    local speed=$(awk -F':' '/^cpu MHz/ { print $2 }' /proc/cpuinfo)
-    local cache=$(awk -F':' '/^cache size/ { print $2 }' /proc/cpuinfo)
+    export SYSINFO_CPUINFO_CPU SYSINFO_CPUINFO_MODEL SYSINFO_CPUINFO_VENDOR SYSINFO_CPUINFO_SPEED SYSINFO_CPUINFO_CACHE
+    SYSINFO_CPUINFO_CPU=$(grep -c 'processor' /proc/cpuinfo)
+    SYSINFO_CPUINFO_MODEL=$(awk -F':' '/^model name/ { print $2 }' /proc/cpuinfo)
+    SYSINFO_CPUINFO_VENDOR=$(awk -F':' '/^vendor_id/ { print $2 }' /proc/cpuinfo)
+    SYSINFO_CPUINFO_SPEED=$(awk -F':' '/^cpu MHz/ { print $2 }' /proc/cpuinfo)
+    SYSINFO_CPUINFO_CACHE=$(awk -F':' '/^cache size/ { print $2 }' /proc/cpuinfo)
 }

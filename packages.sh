@@ -4,6 +4,6 @@ function packageUpdate() {
 }
 
 function packageInstall() {
-    local packages="$@";
-    apt install -y $packages
+    local packages="$*";
+    apt install -y "$packages"
 }

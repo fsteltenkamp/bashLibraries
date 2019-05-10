@@ -11,6 +11,6 @@ function prompt_confirm() {
 }
 
 function user_input() {
-    read -p "$1" REPLY
-    echo $REPLY
+    read -rp "$1" REPLY
+    echo "$REPLY"
 }
