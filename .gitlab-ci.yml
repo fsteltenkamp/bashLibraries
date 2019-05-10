@@ -9,7 +9,30 @@ before_script:
   - cp "shellcheck-stable/shellcheck" /usr/bin/
   - shellcheck --version
 
-test-apache:
+test-scripts:
   stage: test
   script:
     - shellcheck ./downloaders.sh
+    - shellcheck ./file.sh
+    - shellcheck ./http.sh
+    - shellcheck ./input.sh
+    - shellcheck ./output.sh
+    - shellcheck ./packages.sh
+    - shellcheck ./sysinfo.sh
+    - shellcheck ./various.sh
+
+test-installers:
+  stage: test
+  script:
+    - shellcheck ./installers/docker.sh
+    - shellcheck ./installers/elasticsearch.sh
+    - shellcheck ./installers/elasticsearchBeats.sh
+    - shellcheck ./installers/java.sh
+    - shellcheck ./installers/motd.sh
+    - shellcheck ./installers/munin.sh
+    - shellcheck ./installers/muninPlugins.sh
+    - shellcheck ./installers/mysql.sh
+    - shellcheck ./installers/netcorert.sh
+    - shellcheck ./installers/netdata.sh
+    - shellcheck ./installers/webmin.sh
+    - shellcheck ./installers/webserver.sh
