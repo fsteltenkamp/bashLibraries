@@ -1,31 +1,33 @@
 #!/bin/bash
 #getLibsfunction
 function getLib() {
-    local libs="$@";
+    local libs="$*";
     for lib in $libs; do
         libUrl=https://gitlab.com/fsteltenkamp/bashLibraries/raw/master/$lib.sh
         libFile="libs/$lib.sh"
-        if [ ! -f $libFile ]; then
+        if [ ! -f "$libFile" ]; then
             echo "Downloading Library $lib...";
             #download lib
-            wget -qO $libFile $libUrl
+            wget -qO "$libFile" "$libUrl"
         fi
-        source $libFile
+        # shellcheck disable=SC1090
+        source "$libFile"
     done
 }
 function getInstaller() {
-    local installers="$@";
+    local installers="$*";
     #check for installers dir
     checkCreateDir installers
     for installer in $installers; do
         installerUrl="https://gitlab.com/fsteltenkamp/bashLibraries/raw/master/installers/$installer.sh"
         installerFile="installers/$installer.sh"
-        if [ ! -f $installerFile ]; then
+        if [ ! -f "$installerFile" ]; then
             echo "Downloading Installer $installer...";
             #download installer
-            wget -qO $installerFile $installerUrl
+            wget -qO "$installerFile" "$installerUrl"
         fi
         #include lib
-        source $installerFile
+        # shellcheck disable=SC1090
+        source "$installerFile"
     done
 }
