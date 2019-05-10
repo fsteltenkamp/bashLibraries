@@ -20,13 +20,20 @@ function coloredEcho(){
     tput sgr0;
 }
 
+# - logging function -
+# creates colorful log-messages in stdout, also writes to a logfile.
+# logfile can be either submitted by parameter or set globally by using export LOGFILE="example.log" before importing this lib.
+# parameters:
+# 1: string - Type - (success,info,warn,error,fatal,debug,file) -- type=file only writes to log, no stdout
+# 2: string - message - what is set as a message
+# 3: string - logfile - if needed this can be used to set a logfile
 function log() {
     TYPE=$1
     MSG=$2
-    LOGFILENAME=$3
-
-    if [ -z "$LOGFILENAME" ]; then
-        LOGFILENAME="out.log"
+    LOGFILEPARAM=$3
+    
+    if [ -z "$LOGFILEPARAM" ]; then
+        LOGFILENAME="${LOGFILE:=out.log}"
     fi
 
     #colors
