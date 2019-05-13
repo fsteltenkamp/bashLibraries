@@ -8,6 +8,7 @@ before_script:
   - tar -xvf "shellcheck.tar.xz"
   - cp "shellcheck-stable/shellcheck" /usr/bin/
   - shellcheck --version
+  - export SHELLCHECK_OPTS="-e SC2236"
 
 test-scripts:
   stage: test
