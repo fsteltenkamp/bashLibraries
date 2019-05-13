@@ -8,10 +8,3 @@ function downloadFile() {
         wget -qO "$fileName" "$fileSrc"
     fi
 }
-
-function getOnlineFileChecksum() {
-    local file=$1;
-    fileContent=$(curl "$file")
-    checksum=$(shasum "$fileContent")
-    echo "$checksum"
-}
