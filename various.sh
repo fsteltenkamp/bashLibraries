@@ -61,3 +61,13 @@ function replace() {
     #test this:
     sed -i "s#$toreplace#$replacewith#g" "$replacein"
 }
+
+function script_restart() {
+    #if $RESTARTLOC is not set, crash and user has to restart manually.
+    if [ -z "$RESTARTLOC" ]; then
+        log "fatal" "No restart-location found! Please set RESTARTLOC as described in the Wiki. Exiting script. you can restart it manually!"
+        exit 0
+    fi
+    log "warn" "restarting script!"
+    exec "$RESTARTLOC"
+}
