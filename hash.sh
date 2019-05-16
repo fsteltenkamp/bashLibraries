@@ -51,8 +51,8 @@ function hash_checkLibs() {
         url="https://gitlab.com/fsteltenkamp/bashLibraries/raw/master/$lib"
         local remoteHash localHash libname
         libname=$(echo "$lib" | awk -F. '{print $1}')
-        remoteHash=hash_sha_onlineFile "$url"
-        localHash=hash_sha_localFile "libs/$lib"
+        remoteHash=$(hash_sha_onlineFile "$url")
+        localHash=$(hash_sha_localFile "libs/$lib")
         if [ "$remoteHash" == "$localHash" ]; then
             #do nothing, lib is up to date
             echo ""
