@@ -16,10 +16,12 @@ function hash_sha_onlineFile() {
 
 function hash_sha_localFile() {
     local file=$1;
+    local filename;
+    filename=$(echo "$file" | awk -F "/" '{print $1}')
     #hashdir:
     checkCreateDir ".hashes"
     #full file:
-    local hashpath=".hashes/$file.hash"
+    local hashpath=".hashes/$filename.hash"
     checksum=$(shasum "$file" | awk '{ gsub(/,/, ""); print $1}')
     #save hash
     echo "$checksum" > "$hashpath"
