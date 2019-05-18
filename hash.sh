@@ -59,6 +59,7 @@ function hash_checkLibs() {
             #do nothing, lib is up to date
             echo ""
         else
+            log "debug" "adding \"$libname\" to updatevar"
             updateLibs="$updateLibs $libname"
         fi
     done
