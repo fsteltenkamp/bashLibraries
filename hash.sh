@@ -22,7 +22,7 @@ function hash_sha_localFile() {
     local hashpath=".hashes/$file.hash"
     checksum=$(shasum "$file" | awk '{ gsub(/,/, ""); print $1}')
     #save hash
-    echo "$checksum" >> "$hashpath"
+    echo "$checksum" > "$hashpath"
     #return hash
     echo "$checksum"
 }
