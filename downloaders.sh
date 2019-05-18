@@ -32,6 +32,7 @@ echo "$updateLibs"
 #if there were any libraries to update, restart the script:
 #shellcheck disable=SC2236
 if [ ! -z "$updateLibs" ]; then
+    log "debug" "\$updateLibs value: \"$updateLibs\" - restarting now!"
     script_restart
 fi
 
