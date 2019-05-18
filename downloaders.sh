@@ -23,7 +23,7 @@ function getLib() {
 }
 
 #check libraries here:
-getLib "output" "hash" "various"
+getLib "output" "file" "http" "hash" "various"
 log "info" "checking existing libraries..."
 updateLibs=$(hash_checkLibs)
 #todo change echo to getLibs if its working correctly
