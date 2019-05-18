@@ -26,8 +26,10 @@ function getLib() {
 getLib "output" "file" "http" "hash" "various"
 log "info" "checking existing libraries..."
 updateLibs=$(hash_checkLibs)
-#todo change echo to getLibs if its working correctly
-echo "$updateLibs"
+#todo: remove outdated libs and restart the script ( it should download the files normally )
+for lib in $updateLibs; do
+    echo "rm libs/$lib.sh"
+done
 
 #if there were any libraries to update, restart the script:
 #shellcheck disable=SC2236

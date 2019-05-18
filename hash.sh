@@ -43,8 +43,8 @@ function hash_sha_compare() {
     fi
 }
 
+#requires output
 function hash_checkLibs() {
-    getLib "output"
     #use dir because most people customize their ls?
     local libs toupdate
     toupdate=""
@@ -55,11 +55,11 @@ function hash_checkLibs() {
         libname=$(echo "$lib" | awk -F. '{print $1}')
         remoteHash=$(hash_sha_onlineFile "$url")
         localHash=$(hash_sha_localFile "libs/$lib")
-        log "debug" "checking $lib: libname:\"$libname\" remoteHash:\"$remoteHash\" localHash:\"$localHash\""
+        log "file" "checking $lib: libname:\"$libname\" remoteHash:\"$remoteHash\" localHash:\"$localHash\""
         if [ "$remoteHash" == "$localHash" ]; then
-            log "debug" "$lib is up to date."
+            log "file" "$lib is up to date."
         else
-            log "debug" "adding \"$libname\" to updatevar"
+            log "file" "adding \"$libname\" to updatevar"
             toupdate="$toupdate $libname"
         fi
     done
