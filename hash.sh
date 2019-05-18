@@ -46,22 +46,22 @@ function hash_sha_compare() {
 function hash_checkLibs() {
     getLib "output"
     #use dir because most people customize their ls?
-    local libs updateLibs
+    local libs toupdate
+    toupdate=""
     libs=$(dir libs/)
     for lib in $libs; do
-        log "info" "checking $lib!"
         url="https://gitlab.com/fsteltenkamp/bashLibraries/raw/master/$lib"
         local remoteHash localHash libname
         libname=$(echo "$lib" | awk -F. '{print $1}')
         remoteHash=$(hash_sha_onlineFile "$url")
         localHash=$(hash_sha_localFile "libs/$lib")
+        log "debug" "checking $lib: libname:\"$libname\" remoteHash:\"$remoteHash\" localHash:\"$localHash\""
         if [ "$remoteHash" == "$localHash" ]; then
-            #do nothing, lib is up to date
-            echo ""
+            log "debug" "$lib is up to date."
         else
             log "debug" "adding \"$libname\" to updatevar"
-            updateLibs="$updateLibs $libname"
+            toupdate="$toupdate $libname"
         fi
     done
-    echo "$updateLibs"
+    echo "$toupdate"
 }
