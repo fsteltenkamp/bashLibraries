@@ -4,7 +4,7 @@ image: debian:latest
 before_script:
   - apt-get update -y && apt-get upgrade -y
   - apt-get install -y xz-utils wget
-  - wget -qO "shellcheck.tar.xz" "https://storage.googleapis.com/shellcheck/shellcheck-stable.linux.x86_64.tar.xz"
+  - wget -qO "shellcheck.tar.xz" "https://github.com/koalaman/shellcheck/releases/download/stable/shellcheck-stable.linux.x86_64.tar.xz"
   - tar -xvf "shellcheck.tar.xz"
   - cp "shellcheck-stable/shellcheck" /usr/bin/
   - shellcheck --version
