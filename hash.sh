@@ -48,13 +48,13 @@ function hash_checkLibs() {
     #use dir because most people customize their ls?
     local libs toupdate
     toupdate=""
-    libs=$(dir libs/)
+    libs=$(dir .libs/)
     for lib in $libs; do
         url="https://gitlab.com/fsteltenkamp/bashLibraries/raw/master/$lib"
         local remoteHash localHash libname
         libname=$(echo "$lib" | awk -F. '{print $1}')
         remoteHash=$(hash_sha_onlineFile "$url")
-        localHash=$(hash_sha_localFile "libs/$lib")
+        localHash=$(hash_sha_localFile ".libs/$lib")
         log "file" "checking $lib: libname:\"$libname\" remoteHash:\"$remoteHash\" localHash:\"$localHash\""
         if [ "$remoteHash" == "$localHash" ]; then
             log "file" "$lib is up to date."
