@@ -4,13 +4,13 @@
 function getLib() {
     local libs="$*";
     #check libs dir:
-    if [ ! -d "libs" ]; then
-        mkdir -p "libs";
+    if [ ! -d ".libs" ]; then
+        mkdir -p ".libs";
     fi
     #download libs:
     for lib in $libs; do
         libUrl="https://gitlab.com/fsteltenkamp/bashLibraries/raw/master/$lib.sh"
-        libFile="libs/$lib.sh"
+        libFile=".libs/$lib.sh"
         if [ ! -f "$libFile" ]; then
             echo "Downloading Library $lib...";
             #download lib
@@ -28,7 +28,7 @@ log "info" "checking existing libraries..."
 updateLibs=$(hash_checkLibs)
 #todo: remove outdated libs and restart the script ( it should download the files normally )
 for lib in $updateLibs; do
-    echo "rm libs/$lib.sh"
+    echo "rm .libs/$lib.sh"
 done
 
 #if there were any libraries to update, restart the script:
