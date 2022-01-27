@@ -13,6 +13,7 @@ export LOGLEVEL=0
 export LOGFILENAME="sitemgr.log"
 export BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export RESTARTLOC
+export DEBUG=false
 RESTARTLOC=$(readlink -f "$0")
 
 #libraries stuff
