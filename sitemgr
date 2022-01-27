@@ -34,15 +34,15 @@ fi
 getLib "output" "input" "various"
 
 function help() {
-    echo "================================="
-    echo "       Sitemanager v.0.3"
-    echo "================================="
-    echo "Available Commands:"
-    echo " - enable..<page|all>...enables a page (or all)"
-    echo " - disable.<page|all>...disables a page (or all)"
-    echo " - add.....<domainname>.adds a site by domainname"
-    echo " - delconf.<page>.......removes the configfile of specified page"
-    echo " - purge...<page>.......purges everything of that page, including files"
+    log "" "================================="
+    log "" "       Sitemanager v.0.3"
+    log "" "================================="
+    log "" "Available Commands:"
+    log "" " - enable..<page|all>...enables a page (or all)"
+    log "" " - disable.<page|all>...disables a page (or all)"
+    log "" " - add.....<domainname>.adds a site by domainname"
+    log "" " - delconf.<page>.......removes the configfile of specified page"
+    log "" " - purge...<page>.......purges everything of that page, including files"
 }
 
 function enable() {
@@ -209,7 +209,7 @@ case $mode in
         help
     ;;
     shortlist)
-        echo "enable disable add delete purge help shortlist"
+        log "" "enable disable add delete purge help shortlist"
     ;;
     *)
         log "error" "unknown command \"$mode\"! use \"help\" to see available commands."
