@@ -1,0 +1,215 @@
+#!/bin/bash
+mode=$1
+sitesdir="/srv/webhosting"
+
+#settings
+# Setting: Loglevel:
+# 0: everything
+# 1: -debug
+# 2: -fatal
+# 3: -err
+# 4: -warn
+export LOGLEVEL=0
+export LOGFILENAME="sitemgr.log"
+export RESTARTLOC
+RESTARTLOC=$(readlink -f "$0")
+
+#libraries stuff
+if [ ! -d ".libs" ]; then
+    mkdir ".libs"
+fi
+
+if [ ! -f ".libs/downloaders.sh" ]; then
+    wget -qO ".libs/downloaders.sh" https://gitlab.com/fsteltenkamp/bashlibraries/raw/master/downloaders.sh
+    # shellcheck disable=SC1091
+    source ".libs/downloaders.sh"
+else
+    # shellcheck disable=SC1091
+    source ".libs/downloaders.sh"
+fi
+
+#libraries
+getLib "output" "input" "various"
+
+function help() {
+    echo "================================="
+    echo "       Sitemanager v.0.3"
+    echo "================================="
+    echo "Available Commands:"
+    echo " - enable..<page|all>...enables a page (or all)"
+    echo " - disable.<page|all>...disables a page (or all)"
+    echo " - add.....<domainname>.adds a site by domainname"
+    echo " - delconf.<page>.......removes the configfile of specified page"
+    echo " - purge...<page>.......purges everything of that page, including files"
+}
+
+function enable() {
+    site=$1
+    #check if sitename was given
+    if [ -z "$site" ]; then
+        log "error" "Site was not given, please provide a site to enable"
+        return
+    fi
+    #check if config exists
+    if [ ! -f "$sitesdir/$site/docker-compose.yml" ]; then
+        log "error" "$site is not configured correctly!"
+        return
+    fi
+    #enable it
+    log "info" "enabling $site..."
+    cd "$sitesdir/$site"
+    docker-compose up -d
+    log "success" "$site is being enabled!"
+}
+
+function disable() {
+    site=$1
+
+    log "info" "disabling $site..."
+    cd "$sitesdir/$site"
+    docker-compose down
+    log "success" "$site is being disabled."
+}
+
+function add() {
+    DOMAIN=$1
+    SLDOMAIN=$2
+    DOMAINSTUB=$(echo $DOMAIN | sed -e 's/\.//g')
+    SLDOMAINSTUB=$(echo $SLDOMAIN | sed -e 's/\.//g')
+    template="./.template"
+    target="$sitesdir/$DOMAIN"
+    #files:
+    targetConfig="$sitesdir/$DOMAIN/docker-compose.yml"
+    targetEnv="$sitesdir/$DOMAIN/.env"
+    targetApacheConfig="$sitesdir/$DOMAIN/files/config/apache2/sites/000-default.conf"
+    defaultIndex="$sitesdir/$DOMAIN/files/webroot/public/index.html"
+    clibash="$sitesdir/$DOMAIN/cli"
+
+    log "info" "Checking for existing configfile"
+    if [ -d "$target" ]; then
+        log "warning" "$target already exists"
+        exit
+    fi
+
+    log "info" "Adding to sites"
+    echo "$DOMAIN" >> "activesites.txt"
+
+    log "info" "Copying template"
+    cp -r $template "$target"
+
+    log "info" "Modifying Configfiles..."
+    replace "{DOMAIN}" "$DOMAIN" "$targetApacheConfig"
+    replace "{DOMAIN}" "$DOMAIN" "$defaultIndex"
+    replace "{DOMAIN}" "$DOMAIN" "$targetEnv"
+    replace "{BASEDOMAIN}" "$SLDOMAIN" "$targetApacheConfig"
+    replace "{BASEDOMAIN}" "$SLDOMAIN" "$targetEnv"
+    replace "{DOMAINSTUB}" "$DOMAINSTUB" "$targetEnv"
+    replace "{DONTHURTMYVAR_DOMAINSTUB}" "$DOMAINSTUB" "$targetConfig"
+    replace "{SLDOMAINSTUB}" "$SLDOMAINSTUB" "$targetEnv"
+    replace "{DONTHURTMYVAR_SLDOMAINSTUB}" "$SLDOMAINSTUB" "$targetConfig"
+    replace "{dockercontainername}" "${DOMAINSTUB}_webhost_1" "$clibash"
+
+    log "info" "modifying permissions"
+    chown -R www-data:www-data "$target"
+
+    log "info" "Creating docker resources..."
+    docker network create $DOMAINSTUB\_internal
+
+    log "success" "Site Creation complete."
+}
+
+function delete() {
+    site=$1
+
+    disable "$site"
+
+    log "info" "removing docker resources..."
+    #docker network rm
+
+    log "success" "$sitesdir/$site has been removed! If you want to delete its files, use \"purge\"."
+}
+
+function purge() {
+    site=$1
+    #delete config if it still exists
+    if [ -d "$sitesdir/$site" ]; then
+        delete "$site"
+    fi
+
+    log "info" "Purging $site..."
+    rm -r "$sitesdir/$site"
+    log "success" "$site has been completely deleted!"
+}
+
+function stopall() {
+    ASFile="activesites.txt"
+    while read site; do
+        log "info" "stopping $site..."
+        cd "/srv/webhosting/$site"
+        bash ./stop
+    done < $ASFile
+    log "success" "stopped all sites"
+    cd /srv/webhosting
+}
+
+function restartall() {
+    ASFile="activesites.txt"
+    while read site; do
+        cd "/srv/webhosting/$site/"
+        bash ./restart
+    done < $ASFile
+    cd /srv/webhosting
+}
+
+function startall() {
+    ASFile="activesites.txt"
+    while read site; do
+        cd "/srv/webhosting/$site/"
+        bash ./start
+    done < $ASFile
+    cd /srv/webhosting
+}
+
+case $mode in
+    enable)
+        page=$2
+        #check if $page is "all"
+        enable "$page"
+    ;;
+    disable)
+        page=$2
+        #check if $page is "all"
+        disable "$page"
+    ;;
+    add)
+        DOMAIN=$2
+        SLDOMAIN=$3
+        add "$DOMAIN" "$SLDOMAIN"
+    ;;
+    delete)
+        DOMAIN=$2
+        delete "$DOMAIN"
+    ;;
+    purge)
+        DOMAIN=$2
+        purge "$DOMAIN"
+    ;;
+    restartall)
+        restartall
+    ;;
+    stopall)
+        stopall
+    ;;
+    startall)
+        startall
+    ;;
+    help)
+        help
+    ;;
+    shortlist)
+        echo "enable disable add delete purge help shortlist"
+    ;;
+    *)
+        log "error" "unknown command \"$mode\"! use \"help\" to see available commands."
+    ;;
+esac
