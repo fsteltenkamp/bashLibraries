@@ -64,7 +64,6 @@ function replace() {
 
 function stubify() {
     stubifyme=$1
-    log "debug" "stubifying ${stubifyme}."
     stub=$(echo $stubifyme | sed -e 's/\.//g')
     echo $stub
 }
