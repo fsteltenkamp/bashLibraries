@@ -62,6 +62,13 @@ function replace() {
     sed -i "s#$toreplace#$replacewith#g" "$replacein"
 }
 
+function stubify() {
+    stubifyme=$1
+    log "debug" "stubifying ${stubifyme}."
+    stub=$(echo $stubifyme | sed -e 's/\.//g')
+    echo $stub
+}
+
 function script_restart() {
     #if $RESTARTLOC is not set, crash and user has to restart manually.
     if [ -z "$RESTARTLOC" ]; then

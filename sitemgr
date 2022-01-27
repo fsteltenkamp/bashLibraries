@@ -34,6 +34,7 @@ fi
 getLib "output" "input" "various"
 
 function help() {
+    log "debug" "Help function called"
     log "" "================================="
     log "" "       Sitemanager v.0.3"
     log "" "================================="
@@ -46,6 +47,7 @@ function help() {
 }
 
 function enable() {
+    log "debug" "enable function called"
     site=$1
     #check if sitename was given
     if [ -z "$site" ]; then
@@ -65,6 +67,7 @@ function enable() {
 }
 
 function disable() {
+    log "debug" "disable function called"
     site=$1
 
     log "info" "disabling $site..."
@@ -74,10 +77,11 @@ function disable() {
 }
 
 function add() {
+    log "debug" "add function called"
     DOMAIN=$1
     SLDOMAIN=$2
-    DOMAINSTUB=$(echo $DOMAIN | sed -e 's/\.//g')
-    SLDOMAINSTUB=$(echo $SLDOMAIN | sed -e 's/\.//g')
+    DOMAINSTUB=$(stubify $DOMAIN)
+    SLDOMAINSTUB=$(stubify $SLDOMAIN)
     template="./.template"
     target="$sitesdir/$DOMAIN"
     #files:
@@ -86,6 +90,17 @@ function add() {
     targetApacheConfig="$sitesdir/$DOMAIN/files/config/apache2/sites/000-default.conf"
     defaultIndex="$sitesdir/$DOMAIN/files/webroot/public/index.html"
     clibash="$sitesdir/$DOMAIN/cli"
+
+    log "debug" "DOMAIN: ${DOMAIN}"
+    log "debug" "SLDOMAIN: ${SLDOMAIN}"
+    log "debug" "DOMAINSTUB: ${DOMAINSTUB}"
+    log "debug" "SLDOMAINSTUB: ${SLDOMAINSTUB}"
+    log "debug" "FILES:"
+    log "debug" "targetConfig: ${targetConfig}"
+    log "debug" "targetEnv: ${targetEnv}"
+    log "debug" "targetApacheConfig: ${targetApacheConfig}"
+    log "debug" "defaultIndex: ${targetIndex}"
+    log "debug" "clibash: ${clibash}"
 
     log "info" "Checking for existing configfile"
     if [ -d "$target" ]; then
@@ -121,6 +136,7 @@ function add() {
 }
 
 function delete() {
+    log "debug" "delete function called"
     site=$1
 
     disable "$site"
@@ -132,6 +148,7 @@ function delete() {
 }
 
 function purge() {
+    log "debug" "purge function called"
     site=$1
     #delete config if it still exists
     if [ -d "$sitesdir/$site" ]; then
@@ -144,6 +161,7 @@ function purge() {
 }
 
 function stopall() {
+    log "debug" "stopall function called"
     ASFile="activesites.txt"
     while read site; do
         log "info" "stopping $site..."
@@ -155,6 +173,7 @@ function stopall() {
 }
 
 function restartall() {
+    log "debug" "restartall function called"
     ASFile="activesites.txt"
     while read site; do
         cd "/srv/webhosting/$site/"
@@ -164,6 +183,7 @@ function restartall() {
 }
 
 function startall() {
+    log "debug" "startall function called"
     ASFile="activesites.txt"
     while read site; do
         cd "/srv/webhosting/$site/"
@@ -209,7 +229,7 @@ case $mode in
         help
     ;;
     shortlist)
-        log "" "enable disable add delete purge help shortlist"
+        echo "enable disable add delete purge help shortlist"
     ;;
     *)
         log "error" "unknown command \"$mode\"! use \"help\" to see available commands."
