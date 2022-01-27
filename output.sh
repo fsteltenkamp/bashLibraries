@@ -103,9 +103,11 @@ function log() {
             echo "[$TS][FATAL] $MSG" >> $LOGFILEPATH
         ;;
         debug)
-            if [ ! -z $DEBUG && "$DEBUG" = true ]; then
-                echo -e "[${GREY}DEBUG${NOCOL}]${PF} $MSG"
-                echo "[$TS][DEBUG] $MSG" >> $LOGFILEPATH
+            if [ ! -z $DEBUG ]; then
+                if [ "$DEBUG" = true ]; then
+                    echo -e "[${GREY}DEBUG${NOCOL}]${PF} $MSG"
+                    echo "[$TS][DEBUG] $MSG" >> $LOGFILEPATH
+                fi
             fi
         ;;
         file)
