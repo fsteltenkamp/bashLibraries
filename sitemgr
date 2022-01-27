@@ -12,6 +12,8 @@ sitesdir="/srv/webhosting"
 export LOGLEVEL=0
 export LOGFILENAME="sitemgr.log"
 export BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+export CONFIGFILE="config.json"
+export CONFIGPATH="${BASEDIR}/.config/${CONFIGFILE}"
 export RESTARTLOC
 export DEBUG=false
 RESTARTLOC=$(readlink -f "$0")
@@ -32,6 +34,18 @@ fi
 
 #libraries
 getLib "output" "input" "various"
+
+# loads the config
+# return:
+# 1: config (String json representation)
+function load() {
+    export CONFIG=$(cat ${CONFIGPATH})
+}
+
+# saves configuration
+function save() {
+    echo "${CONFIG}" > $CONFIGPATH
+}
 
 function help() {
     log "debug" "Help function called"
