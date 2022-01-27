@@ -11,6 +11,7 @@ sitesdir="/srv/webhosting"
 # 4: -warn
 export LOGLEVEL=0
 export LOGFILENAME="sitemgr.log"
+export BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export RESTARTLOC
 RESTARTLOC=$(readlink -f "$0")
 

@@ -27,17 +27,20 @@ function coloredEcho(){
 # ========== Supported global vars ==========
 # - to use global vars, use export <varname>="<value>" before importing the lib.
 # 1: PREFIX - sets the prefix for logs.
-# 2: LOGFILE - sets the output logfile.
+# 2: LOGFILE - sets the name of the output logfile.
+# 3: BASEDIR - if set, this saves the logfile in a directory like this: BASEDIR/.log/LOGFILE
+# 4: DEBUG - if set, it determines if the "debug" type should be printed or not. (True/false)
 # ========== parameters ==========
 # 1: string - Type - (success,info,warn,error,fatal,debug,file) -- type=file only writes to log, no stdout
 # 2: string - message - what is set as a message
 # 3: string - prefix - this can be used to set a prefix, useful if working with multiple programs or hosts from a central script
-# 4: string - logfile - if needed this can be used to set a logfile
+# 4: string - logfile - if needed this can be used to set a logfile, overwrites the global vars.
 function log() {
     TYPE=$1
     MSG=$2
     PREFIXPARAM=$3
     LOGFILEPARAM=$4
+    LOGFILEPATH=""
 
     #colors
     RED="\033[1;31m"
@@ -51,7 +54,6 @@ function log() {
     WHITE="\033[1;39m"
     NOCOL="\033[00m"
 
-
     TS=$(date "+%Y-%m-%d %T")
 
     if [ -z "$PREFIXPARAM" ]; then
@@ -63,40 +65,51 @@ function log() {
     fi
 
     if [ -z "$LOGFILEPARAM" ]; then
-        LOGFILENAME="${LOGFILE:=out.log}"
+        LOGFILENAME="${LOGFILE:=default.log}"
+    fi
+
+    if [ ! -z "$BASEDIR" ]; then
+        $LOGFILEPATH="${BASEDIR}/${LOGFILENAME}"
+    else
+        if [ ! -d "/var/log/bashLibraries/" ]; then
+            mkdir -p "/var/log/bashLibraries/"
+        fi
+        $LOGFILEPATH="/var/log/bashLibraries/${LOGFILENAME}"
     fi
 
     case $TYPE in
         success)
             echo -e "[${GREEN}SUCCESS${NOCOL}]${PF} $MSG"
-            echo "[$TS][SUCCESS] $MSG" >> $LOGFILENAME
+            echo "[$TS][SUCCESS] $MSG" >> $LOGFILEPATH
         ;;
         info)
             echo -e "[${CYAN}INFO${NOCOL}]${PF} $MSG"
-            echo "[$TS][INFO] $MSG" >> $LOGFILENAME
+            echo "[$TS][INFO] $MSG" >> $LOGFILEPATH
         ;;
         warn)
             echo -e "[${YELLOW}WARN${NOCOL}]${PF} $MSG"
-            echo "[$TS][WARN] $MSG" >> $LOGFILENAME
+            echo "[$TS][WARN] $MSG" >> $LOGFILEPATH
         ;;
         error)
             echo -e "[${RED}ERROR${NOCOL}]${PF} $MSG"
-            echo "[$TS][ERROR] $MSG" >> $LOGFILENAME
+            echo "[$TS][ERROR] $MSG" >> $LOGFILEPATH
         ;;
         fatal)
             echo -e "[${MAGENTA}FATAL${NOCOL}]${PF} $MSG"
-            echo "[$TS][FATAL] $MSG" >> $LOGFILENAME
+            echo "[$TS][FATAL] $MSG" >> $LOGFILEPATH
         ;;
         debug)
-            echo -e "[${GREY}DEBUG${NOCOL}]${PF} $MSG"
-            echo "[$TS][DEBUG] $MSG" >> $LOGFILENAME
+            if [ ! -z $DEBUG && $DEBUG == true ]; then
+                echo -e "[${GREY}DEBUG${NOCOL}]${PF} $MSG"
+                echo "[$TS][DEBUG] $MSG" >> $LOGFILEPATH
+            fi
         ;;
         file)
-            echo "[$TS] $MSG" >> $LOGFILENAME
+            echo "[$TS] $MSG" >> $LOGFILEPATH
         ;;
         *)
             echo -e "${PF}$MSG"
-            echo "[$TS] $MSG" >> $LOGFILENAME
+            echo "[$TS] $MSG" >> $LOGFILEPATH
         ;;
     esac
 }
