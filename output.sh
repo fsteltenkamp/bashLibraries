@@ -69,12 +69,16 @@ function log() {
     fi
 
     if [ ! -z "$BASEDIR" ]; then
-        $LOGFILEPATH="${BASEDIR}/${LOGFILENAME}"
+        LOGFILEPATH="${BASEDIR}/.log"
+        if [ ! -d $LOGFILEPATH ]; then
+            mkdir -p $LOGFILEPATH
+            LOGFILEPATH="${LOGFILEPATH}/${LOGFILENAME}"
+        fi
     else
         if [ ! -d "/var/log/bashLibraries/" ]; then
             mkdir -p "/var/log/bashLibraries/"
         fi
-        $LOGFILEPATH="/var/log/bashLibraries/${LOGFILENAME}"
+        LOGFILEPATH="/var/log/bashLibraries/${LOGFILENAME}"
     fi
 
     case $TYPE in
