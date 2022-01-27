@@ -72,8 +72,8 @@ function log() {
         LOGFILEPATH="${BASEDIR}/.log"
         if [ ! -d $LOGFILEPATH ]; then
             mkdir -p $LOGFILEPATH
-            LOGFILEPATH="${LOGFILEPATH}/${LOGFILENAME}"
         fi
+        LOGFILEPATH="${LOGFILEPATH}/${LOGFILENAME}"
     else
         if [ ! -d "/var/log/bashLibraries/" ]; then
             mkdir -p "/var/log/bashLibraries/"
