@@ -43,7 +43,7 @@ function getInstaller() {
     #check for installers dir
     checkCreateDir installers
     for installer in $installers; do
-        installerUrl="https://gitlab.com/fsteltenkamp/bashLibraries/raw/master/installers/$installer.sh"
+        installerUrl="https://git.steltenkamp.net/fsteltenkamp/bashLibraries/raw/branch/master/installers/$installer.sh"
         installerFile="installers/$installer.sh"
         if [ ! -f "$installerFile" ]; then
             echo "Downloading Installer $installer...";

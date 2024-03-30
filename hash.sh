@@ -50,7 +50,7 @@ function hash_checkLibs() {
     toupdate=""
     libs=$(dir .libs/)
     for lib in $libs; do
-        url="https://gitlab.com/fsteltenkamp/bashLibraries/raw/master/$lib"
+        url="https://git.steltenkamp.net/fsteltenkamp/bashLibraries/raw/branch/master/$lib"
         local remoteHash localHash libname
         libname=$(echo "$lib" | awk -F. '{print $1}')
         remoteHash=$(hash_sha_onlineFile "$url")

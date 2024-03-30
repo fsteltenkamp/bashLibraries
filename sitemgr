@@ -24,7 +24,7 @@ if [ ! -d ".libs" ]; then
 fi
 
 if [ ! -f ".libs/downloaders.sh" ]; then
-    wget -qO ".libs/downloaders.sh" https://gitlab.com/fsteltenkamp/bashlibraries/raw/master/downloaders.sh
+    wget -qO ".libs/downloaders.sh" https://git.steltenkamp.net/fsteltenkamp/bashLibraries/raw/branch/master/downloaders.sh
     # shellcheck disable=SC1091
     source ".libs/downloaders.sh"
 else
