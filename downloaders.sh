@@ -9,7 +9,7 @@ function getLib() {
     fi
     #download libs:
     for lib in $libs; do
-        libUrl="https://gitlab.com/fsteltenkamp/bashLibraries/raw/master/$lib.sh"
+        libUrl="https://git.steltenkamp.net/fsteltenkamp/bashLibraries/raw/branch/master/$lib.sh"
         libFile=".libs/$lib.sh"
         if [ ! -f "$libFile" ]; then
             echo "Downloading Library $lib...";
